@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dscorers_victorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AlternativeMeasure">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MeasureID" Type="int" />
+          <Property Name="Multiplier" Type="real" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MeasureID" Type="int" Nullable="false" />
+          <Property Name="Сalories" Type="int" Nullable="false" />
+          <Property Name="Fats" Type="int" Nullable="false" />
+          <Property Name="Сarbohydrates" Type="int" Nullable="false" />
+          <Property Name="Proteins" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MeasureUnit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Duration" Type="int" />
+          <Property Name="Portions" Type="int" />
+        </EntityType>
+        <EntityType Name="Recepient_Ingredient">
+          <Key>
+            <PropertyRef Name="ReceiptID" />
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="ReceiptID" Type="int" Nullable="false" />
+          <Property Name="IngredientID" Type="int" Nullable="false" />
+          <Property Name="Volume" Type="float" />
+        </EntityType>
+        <Association Name="FK_AlternativeMeasure_MeasureUnit">
+          <End Role="MeasureUnit" Type="Self.MeasureUnit" Multiplicity="0..1" />
+          <End Role="AlternativeMeasure" Type="Self.AlternativeMeasure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasureUnit">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AlternativeMeasure">
+              <PropertyRef Name="MeasureID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingredient_MeasureUnit">
+          <End Role="MeasureUnit" Type="Self.MeasureUnit" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasureUnit">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="MeasureID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recepient_Ingredient_Ingredient">
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="1" />
+          <End Role="Recepient_Ingredient" Type="Self.Recepient_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Recepient_Ingredient">
+              <PropertyRef Name="IngredientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recepient_Ingredient_Receipt">
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="1" />
+          <End Role="Recepient_Ingredient" Type="Self.Recepient_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Recepient_Ingredient">
+              <PropertyRef Name="ReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dscorers_victorModelStoreContainer">
+          <EntitySet Name="AlternativeMeasure" EntityType="Self.AlternativeMeasure" Schema="victordb" store:Type="Tables" />
+          <EntitySet Name="Ingredient" EntityType="Self.Ingredient" Schema="victordb" store:Type="Tables" />
+          <EntitySet Name="MeasureUnit" EntityType="Self.MeasureUnit" Schema="victordb" store:Type="Tables" />
+          <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="victordb" store:Type="Tables" />
+          <EntitySet Name="Recepient_Ingredient" EntityType="Self.Recepient_Ingredient" Schema="victordb" store:Type="Tables" />
+          <AssociationSet Name="FK_AlternativeMeasure_MeasureUnit" Association="Self.FK_AlternativeMeasure_MeasureUnit">
+            <End Role="MeasureUnit" EntitySet="MeasureUnit" />
+            <End Role="AlternativeMeasure" EntitySet="AlternativeMeasure" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient_MeasureUnit" Association="Self.FK_Ingredient_MeasureUnit">
+            <End Role="MeasureUnit" EntitySet="MeasureUnit" />
+            <End Role="Ingredient" EntitySet="Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recepient_Ingredient_Ingredient" Association="Self.FK_Recepient_Ingredient_Ingredient">
+            <End Role="Ingredient" EntitySet="Ingredient" />
+            <End Role="Recepient_Ingredient" EntitySet="Recepient_Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recepient_Ingredient_Receipt" Association="Self.FK_Recepient_Ingredient_Receipt">
+            <End Role="Receipt" EntitySet="Receipt" />
+            <End Role="Recepient_Ingredient" EntitySet="Recepient_Ingredient" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dscorers_victorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Сalories" Type="Int32" Nullable="false" />
+          <Property Name="Fats" Type="Int32" Nullable="false" />
+          <Property Name="Сarbohydrates" Type="Int32" Nullable="false" />
+          <Property Name="Proteins" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Recepient_Ingredient" Relationship="dscorers_victorModel.FK_Recepient_Ingredient_Ingredient" FromRole="Ingredient" ToRole="Recepient_Ingredient" />
+          <Property Name="MeasureID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MeasureUnit" Relationship="dscorers_victorModel.FK_Ingredient_MeasureUnit" FromRole="Ingredient" ToRole="MeasureUnit" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="Int32" />
+          <Property Name="Portions" Type="Int32" />
+          <NavigationProperty Name="Recepient_Ingredient" Relationship="dscorers_victorModel.FK_Recepient_Ingredient_Receipt" FromRole="Receipt" ToRole="Recepient_Ingredient" />
+        </EntityType>
+        <EntityType Name="Recepient_Ingredient">
+          <Key>
+            <PropertyRef Name="ReceiptID" />
+            <PropertyRef Name="IngredientID" />
+          </Key>
+          <Property Name="ReceiptID" Type="Int32" Nullable="false" />
+          <Property Name="IngredientID" Type="Int32" Nullable="false" />
+          <Property Name="Volume" Type="Double" />
+          <NavigationProperty Name="Ingredient" Relationship="dscorers_victorModel.FK_Recepient_Ingredient_Ingredient" FromRole="Recepient_Ingredient" ToRole="Ingredient" />
+          <NavigationProperty Name="Receipt" Relationship="dscorers_victorModel.FK_Recepient_Ingredient_Receipt" FromRole="Recepient_Ingredient" ToRole="Receipt" />
+        </EntityType>
+        <EntityContainer Name="dscorers_victorEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
+          <EntitySet Name="Receipts" EntityType="Self.Receipt" />
+          <EntitySet Name="Recepient_Ingredient" EntityType="Self.Recepient_Ingredient" />
+          <AssociationSet Name="FK_Recepient_Ingredient_Ingredient" Association="dscorers_victorModel.FK_Recepient_Ingredient_Ingredient">
+            <End Role="Ingredient" EntitySet="Ingredients" />
+            <End Role="Recepient_Ingredient" EntitySet="Recepient_Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recepient_Ingredient_Receipt" Association="dscorers_victorModel.FK_Recepient_Ingredient_Receipt">
+            <End Role="Receipt" EntitySet="Receipts" />
+            <End Role="Recepient_Ingredient" EntitySet="Recepient_Ingredient" />
+          </AssociationSet>
+          <EntitySet Name="AlternativeMeasures" EntityType="dscorers_victorModel.AlternativeMeasure" />
+          <EntitySet Name="MeasureUnits" EntityType="dscorers_victorModel.MeasureUnit" />
+          <AssociationSet Name="FK_AlternativeMeasure_MeasureUnit" Association="dscorers_victorModel.FK_AlternativeMeasure_MeasureUnit">
+            <End Role="MeasureUnit" EntitySet="MeasureUnits" />
+            <End Role="AlternativeMeasure" EntitySet="AlternativeMeasures" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient_MeasureUnit" Association="dscorers_victorModel.FK_Ingredient_MeasureUnit">
+            <End Role="MeasureUnit" EntitySet="MeasureUnits" />
+            <End Role="Ingredient" EntitySet="Ingredients" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Recepient_Ingredient_Ingredient">
+          <End Type="dscorers_victorModel.Ingredient" Role="Ingredient" Multiplicity="1" />
+          <End Type="dscorers_victorModel.Recepient_Ingredient" Role="Recepient_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Recepient_Ingredient">
+              <PropertyRef Name="IngredientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recepient_Ingredient_Receipt">
+          <End Type="dscorers_victorModel.Receipt" Role="Receipt" Multiplicity="1" />
+          <End Type="dscorers_victorModel.Recepient_Ingredient" Role="Recepient_Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Recepient_Ingredient">
+              <PropertyRef Name="ReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AlternativeMeasure">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MeasureID" Type="Int32" />
+          <Property Name="Multiplier" Type="Single" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MeasureUnit" Relationship="dscorers_victorModel.FK_AlternativeMeasure_MeasureUnit" FromRole="AlternativeMeasure" ToRole="MeasureUnit" />
+        </EntityType>
+        <EntityType Name="MeasureUnit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AlternativeMeasures" Relationship="dscorers_victorModel.FK_AlternativeMeasure_MeasureUnit" FromRole="MeasureUnit" ToRole="AlternativeMeasure" />
+          <NavigationProperty Name="Ingredients" Relationship="dscorers_victorModel.FK_Ingredient_MeasureUnit" FromRole="MeasureUnit" ToRole="Ingredient" />
+        </EntityType>
+        <Association Name="FK_AlternativeMeasure_MeasureUnit">
+          <End Type="dscorers_victorModel.MeasureUnit" Role="MeasureUnit" Multiplicity="0..1" />
+          <End Type="dscorers_victorModel.AlternativeMeasure" Role="AlternativeMeasure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasureUnit">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AlternativeMeasure">
+              <PropertyRef Name="MeasureID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingredient_MeasureUnit">
+          <End Type="dscorers_victorModel.MeasureUnit" Role="MeasureUnit" Multiplicity="1" />
+          <End Type="dscorers_victorModel.Ingredient" Role="Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasureUnit">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="MeasureID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dscorers_victorModelStoreContainer" CdmEntityContainer="dscorers_victorEntities">
+          <EntitySetMapping Name="Ingredients">
+            <EntityTypeMapping TypeName="dscorers_victorModel.Ingredient">
+              <MappingFragment StoreEntitySet="Ingredient">
+                <ScalarProperty Name="MeasureID" ColumnName="MeasureID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Сalories" ColumnName="Сalories" />
+                <ScalarProperty Name="Fats" ColumnName="Fats" />
+                <ScalarProperty Name="Сarbohydrates" ColumnName="Сarbohydrates" />
+                <ScalarProperty Name="Proteins" ColumnName="Proteins" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipts">
+            <EntityTypeMapping TypeName="dscorers_victorModel.Receipt">
+              <MappingFragment StoreEntitySet="Receipt">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Portions" ColumnName="Portions" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recepient_Ingredient">
+            <EntityTypeMapping TypeName="dscorers_victorModel.Recepient_Ingredient">
+              <MappingFragment StoreEntitySet="Recepient_Ingredient">
+                <ScalarProperty Name="ReceiptID" ColumnName="ReceiptID" />
+                <ScalarProperty Name="IngredientID" ColumnName="IngredientID" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlternativeMeasures">
+            <EntityTypeMapping TypeName="dscorers_victorModel.AlternativeMeasure">
+              <MappingFragment StoreEntitySet="AlternativeMeasure">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="MeasureID" ColumnName="MeasureID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MeasureUnits">
+            <EntityTypeMapping TypeName="dscorers_victorModel.MeasureUnit">
+              <MappingFragment StoreEntitySet="MeasureUnit">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

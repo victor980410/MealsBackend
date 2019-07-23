@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bdf79f67fb3547f4b0bff3ac43986f97" Name="Diagram1">
+        <EntityTypeShape EntityType="dscorers_victorModel.Ingredient" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dscorers_victorModel.Receipt" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dscorers_victorModel.Recepient_Ingredient" Width="1.5" PointX="2.5" PointY="5.875" IsExpanded="true" />
+        <AssociationConnector Association="dscorers_victorModel.FK_Recepient_Ingredient_Ingredient" />
+        <AssociationConnector Association="dscorers_victorModel.FK_Recepient_Ingredient_Receipt" />
+        <EntityTypeShape EntityType="dscorers_victorModel.AlternativeMeasure" Width="1.5" PointX="7.625" PointY="9.375" />
+        <EntityTypeShape EntityType="dscorers_victorModel.MeasureUnit" Width="1.5" PointX="5.375" PointY="1.5" />
+        <AssociationConnector Association="dscorers_victorModel.FK_AlternativeMeasure_MeasureUnit" />
+        <AssociationConnector Association="dscorers_victorModel.FK_Ingredient_MeasureUnit" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
